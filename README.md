@@ -1,19 +1,27 @@
 # ESPHome Genie Garage Door Opener Interface
-ESPHome config and code for a serial-to-wifi interface for some Genie garage door openers. Works fo getting garage door status in HomeAsssistant.
+ESPHome config and code for a serial-to-wifi interface for some Genie garage door openers. Works for getting garage door status in HomeAsssistant.
 
-<img src="/assets/opener_overview.jpg" alt="Opener with modified board" width="100%"/>
+<img src="/assets/opener_overview.jpg" alt="Opener with modified board" width="50%"/>
 
 ## What is this?
 
-Some Genie garage door openers, like the Model 3024, have a 'Network' port that is intended to be used with a non-wifi wireless adapter. It would normally be used for things like thier two-way handheld remote, which gives the user confirmation that the garage door is closed.
+Some Genie garage door openers, like the Model 3024, have a 'Network' port that is intended to be used with a 433 MHz wireless adapter. It would normally be used for things like thier two-way handheld remote, which gives the user confirmation that the garage door is closed.
 
 The actual 'Network' port is just a 10-pin 0.1" connector, and provides 3.3 V power and some UART serial data lines. It's designed for a Genie wireless adapter that talks to some Genie remotes. It can be used to retrieve the garage opener state.
 
-<img src="/assets/gn-bx-with-esp.jpg" alt="modified board" width="100%"/>
+<img src="/assets/gn-bx-with-esp.jpg" alt="modified board" width="50%"/>
 
 [ESPHome](https://esphome.io/index.html) is a system for flashing ESP32- and ESP8266-based IoT home automation devices. In this project, we use an [ESP8266-based module](https://www.waveshare.com/ESP-01F.htm) to listen to the serial data coming out of the garage door opener, and report that over WiFi to wherever we want (such as [HomeAssistant](https://www.home-assistant.io/)).
 
-<img src="/assets/ha_history.pngjpg" alt="modified board" width="100%"/>
+<img src="/assets/ha_history.png" alt="Homeassistant example" width="100%" />
+
+## What's in this repo
+
+- [protocol-notes.md](/protocol-notes.md) contains some notes from decoding the serial protocol Genie uses
+- [electrical-notes.md](/electrical-notes.md) contains some info about the electrical pinouts of the system, and how to solder an ESP01F to a GN-BX network adapter
+- [garagedoor.yaml](/garagedoor.yaml) is an ESPHome config for flashing an ESP-01F module.
+- [genie_garage_serial_component.h](/genie_garage_serial_component.h) is the C++ code used to make a custom component which does all the data decoding. Used by garagedoor.yaml.
+
 
 ## The Bad News
 
@@ -29,12 +37,6 @@ Once we get status info flowing out of the garage door opener, we can decode it 
 - Overhead light state
 - Break-beam sensor state
 
-## What's in this repo
-
-- [protocol-notes.md](/protocol-notes.md) contains some notes from decoding the serial protocol Genie uses
-- [electrical-notes.md](/electrical-notes.md) contains some info about the electrical pinouts of the system, and how to solder an ESP01F to a GN-BX network adapter
-- [garagedoor.yaml](/garagedoor.yaml) is an ESPHome config for flashing an ESP-01F module.
-- [genie_garage_serial_component.h](/genie_garage_serial_component.h) is the C++ code used to make a custom component which does all the data decoding. Used by garagedoor.yaml.
 
 ## Future Work
 

@@ -9,29 +9,42 @@ example:
    0C  = total length - 1
       61 is a type code?
 ```
+
 last byte (91) is sum of all previous bytes - 1
+
 Codes are somtimes followed by acks that are 0x80 higher
 
-## Adapter to Opener (powehead) packets
+## Adapter to Opener (powerhead) packets
 
 ### Adapter 0x61 - I'm here? 
+
 `01 0C 61 00 00 A9 2C FD 2A 9A 89 05 91`
+
 payload is all 00 when initiaizing - perhaps used for auth?
+
 After that, is sent with real payload once, never seen again
 
 ### Adapter 0x70
+
 `01 05 70 00 01 76 01 05 70 00 01 76` (It's getting repeated back-to-back)
+
 payload: `00 01 76 `
+
 Used once in startup
 
 ### Adapter 0x21
+
 `01 05 21 00 23 49` (once shortly after start) (not always)
+
 `01 05 21 00 22 48` (repeated)
+
 some kind of keep alive?
 
 ### Adapter 0x40
+
 `01 04 40 19 5D`
-Maye used to indicate the paring button command? Not happening all the time
+
+Maybe used to indicate the paring button command? Not happening all the time
 
 ## Opener (powehead) to Adapter packets
 
@@ -41,28 +54,43 @@ Maye used to indicate the paring button command? Not happening all the time
 01 08 60 00 48 E4 48 D4 B0 
 01 08 60 00 54 EC 54 C8 C4
 ```
+
 Seems to initate startup, payload seem to change on reboot / over time.
+
 Probably the start of authenticaion.
+
 Doesn't roll as often as it should though. Like once per reboot per session?
 
 ### Opener 0x62
+
 `01 08 62 00 AB 1A D5 0C 10`
+
 Seen once during startup.
+
 Probably the start of authenticaion.
 
 ### Opener 0xF0
+
 `01 04 F0 00 F4`
+
 Only ever once, right at the start
+
 Response to 70?
+
 Oddly only acked once
 
 ## Opener 0xA1
+
 `01 04 A1 00 A5`
+
 Direct response to 0x21?
 
 ### Opener 0xE1 
+
 `01 04 E1 00 E5`
+
 Only seen at startup
+
 direct response to 0x61?
 
 ### Opener 0x20 - Opener status
@@ -106,17 +134,23 @@ after some hours
 ```
 
 Longer opener status
+
 EC seems to be a mirror of 0x20's closed-ed-ness value
 
 ### opener 0x70
+
 `01 05 70 00 01 76`
+
 Only once
+
 Unusual, since the adapter says this too
+
 Was said around the time of pairing button
+
 
 ## A guess at the startup process
 
-adapter: 01 0C 61 00 00 00 00 00 00 00 00 00 6D (I'm me, but I don't have a challange response)
+```adapter: 01 0C 61 00 00 00 00 00 00 00 00 00 6D (I'm me, but I don't have a challange response)
 adapter: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 (timing BS? Wakeup?)
 opener: 01 04 E1 00 E5 (0x61 ack)
 opener: 01 08 60 00 54 EC 54 C8 C4 (I'm an opener, here's an auth challange periodicly until we're set up)
@@ -138,13 +172,15 @@ adapter: 01 05 21 00 22 48 (adapter status)
 opener: 01 04 A1 00 A5 (0x 21 ack)
 opener: 01 0A 20 00 02 48 00 EC 00 00 60 (opener status)
 opener: 01 14 22 00 51 12 44 E8 05 86 11 00 00 00 7B EC 00 EC 00 00 B4 (long opener status)
-
+```
 
 It looks like the response is different every time! Crap!
 
 Good news: replaying the adapter 0x61 response works... until the opener is rebooted or changes it's challange.
 
 Looking at multiple inits:
+
+```
 01 08 60 -- from opener --    01 0C 61 -- from adapter --               01 08 62 -- from opener --
 01 08 60 00 54 EC 54 C8 C4    01 0C 61 00 07 41 BC 0A 69 44 96 A5 63    01 08 62 00 BC 5A 5C C0 9C
 01 08 60 00 54 EC 54 C8 C4    01 0C 61 00 C4 C7 31 19 5F 0A 9A BE 03    01 08 62 00 C4 90 80 2C 6A
@@ -155,6 +191,7 @@ Looking at multiple inits:
 01 08 60 00 54 EC 54 C8 C4    01 0C 61 00 69 F2 5A C0 F3 6F 2D 68 D9    01 08 62 00 72 F3 27 F3 E9
 01 08 60 00 54 EC 54 C8 C4    01 0C 61 00 4F 52 6F C5 25 7B B5 E8 7F    01 08 62 00 82 F4 D4 CA 7E    
 01 08 60 00 57 EC 57 CB CD    01 0C 61 00 57 61 1F D0 E5 EE 95 24 A0    01 08 62 00 C3 5C 53 F5 D1
+```
 
           
 

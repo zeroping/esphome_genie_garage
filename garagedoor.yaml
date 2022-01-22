@@ -1,0 +1,93 @@
+# Basic Config
+#---
+substitutions:
+#  https://esphome.io/guides/configuration-types.html#substitutions
+  device_name: garagedoor # hostname & entity_id
+
+<<: !include wifi.yaml
+  
+esphome:
+  name: ${device_name}
+  platform: ESP8266
+  board: esp01_1m
+  includes:
+    - genie_garage_serial_component.h
+
+#wifi:
+  # https://esphome.io/components/wifi
+
+  
+#captive_portal:
+# doesn't work under esp-idf
+  
+web_server:
+  port: 80
+
+
+logger:
+  # we need UART0 for the garage serial, so switch the logger off of it.
+  hardware_uart: UART1
+  # https://esphome.io/components/logger
+
+api:
+  #password: !secret esphome_api_password
+  # https://esphome.io/components/api
+  reboot_timeout: 0s #disable auto-reboot if homeassistant is not connecting
+
+ota:
+  #password: !secret esphome_ota_password
+  # https://esphome.io/components/ota
+
+uart:
+  #this depends on which ESP you use
+  id: uart_bus
+  tx_pin: 1
+  rx_pin: 3
+  baud_rate: 38400
+
+# this is the main output of garage door movement
+cover:
+  - platform: template
+    name: "Garage Door"
+    device_class: "garage"
+    id: garage_door_cover
+    has_position: true
+    optimistic: false
+  
+binary_sensor:
+  # additional binary sensors for our extra info
+  - platform: template
+    name: "Garage Door Breakbeam"
+    id: garage_door_breakbeam
+    icon: "mdi:garage"
+    
+  - platform: template
+    name: "Garage Door Light"
+    id: garage_door_light
+    icon: "mdi:dome-light"
+    
+#sensor:
+  #- platform: template
+    #name: "Garage Door Openness"
+    #id: garage_door_amount
+    ##device_class: 
+    #unit_of_measurement: "%"
+    #icon: "mdi:garage"
+    #filters:
+      #- or:
+        #- throttle: 60s
+        #- delta: 0.01
+
+text_sensor:
+  # we can also log a string that we use for debugging things
+  - platform: template
+    name: "Garage Internal Status Bytes"
+    id: garage_debug
+
+custom_component:
+- lambda: |-
+    auto my_garage = new GenieGarageSerial(id(uart_bus), id(garage_door_breakbeam), id(garage_door_light), id(garage_door_cover), id(garage_debug));
+    return {my_garage};
+    
+
+

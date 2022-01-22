@@ -5,7 +5,7 @@
 
 ## GN-BX details
 
-<img src="/assets/gnbx-internal.png" alt="GN-BX internals" width="50%"/>
+<img src="https://raw.githubusercontent.com/zeroping/esphome_genie_garage/main/assets/gnbx-internal.png" alt="GN-BX internals" width="50%"/>
 
 This is what the network port is designed for, the Genie Garage Door GN-BX Network Adaptor.
 - Model 37350R 
@@ -51,7 +51,7 @@ Viewed from below the opener:
 
 ## Adding an ESP8266 or ESP32 to the GN-BX
 
-<img src="/assets/gn-bx-with-esp.jpg" alt="modified board" width="60%"/>
+<img src="https://raw.githubusercontent.com/zeroping/esphome_genie_garage/main/assets/gn-bx-with-esp.jpg" alt="modified board" width="60%"/>
 
 I used the very tiny ESP-01F. You shouldn't. It's annoyingly small. Get some larger ESP-based board.
 

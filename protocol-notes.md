@@ -150,7 +150,8 @@ Was said around the time of pairing button
 
 ## A guess at the startup process
 
-```adapter: 01 0C 61 00 00 00 00 00 00 00 00 00 6D (I'm me, but I don't have a challange response)
+```
+adapter: 01 0C 61 00 00 00 00 00 00 00 00 00 6D (I'm me, but I don't have a challange response)
 adapter: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 (timing BS? Wakeup?)
 opener: 01 04 E1 00 E5 (0x61 ack)
 opener: 01 08 60 00 54 EC 54 C8 C4 (I'm an opener, here's an auth challange periodicly until we're set up)
@@ -172,7 +173,7 @@ adapter: 01 05 21 00 22 48 (adapter status)
 opener: 01 04 A1 00 A5 (0x 21 ack)
 opener: 01 0A 20 00 02 48 00 EC 00 00 60 (opener status)
 opener: 01 14 22 00 51 12 44 E8 05 86 11 00 00 00 7B EC 00 EC 00 00 B4 (long opener status)
-```
+``` 
 
 It looks like the response is different every time! Crap!
 

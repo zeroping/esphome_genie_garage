@@ -1,9 +1,11 @@
 # Electrical Notes
 
-## List of supported garage door openers so far:
+## List of known supported garage door openers so far:
 - Model 3024
 
 ## GN-BX details
+
+<img src="/assets/gnbx-internal.png" alt="GN-BX internals" width="100%"/>
 
 This is what the network port is designed for, the Genie Garage Door GN-BX Network Adaptor.
 - Model 37350R 
@@ -11,9 +13,11 @@ This is what the network port is designed for, the Genie Garage Door GN-BX Netwo
 
 It's a 433MHz wireless adapter that's used for [a remote that lets you know when the door is closed](https://www.amazon.com/Genie-GLRN-R-Close-Confirm-Adapter/dp/B00715DTKA). Maybe also used for a wall-mounted remote too.
 
-The GN-BX contains a cc1110-f32
+You can buy them from time to time on eBay.
 
-It has an umpopulated 0.1" connector, inside the case:
+The GN-BX contains a cc1110-f32.
+
+It has an unpopulated 0.1" connector, inside the case:
 1. 3V3
 2. Reset
 3. P0.4 or U1TX, RX into opener
@@ -44,7 +48,11 @@ Viewed from below the opener:
 - Pin 1 is bottom left, closest to N in the text 'Network'
 - Pin 10 is top right
 
-## Adding an ESP8266 or ESP32
+## Adding an ESP8266 or ESP32 to the GN-BX
+
+<img src="/assets/gn-bx-with-esp.jpg" alt="modified board" width="100%"/>
+
+I used the very tiny ESP-01F. You shouldn't. It's annoyingly small. Get some larger ESP-based board.
 
 Start by flashing the ESP with ESPHome and getting it on your wifi. Flashing uses the UART pins, and we'll be connecting RX to the Opener's TX later.
 
@@ -53,7 +61,7 @@ Once it's programed, use the **internal** 10-pin connector from the GN-BX to con
 - ESP's 3.3 V to pin 1
 - ESP's RX to pin 6
 
-You may want to solder the ESP's RF shield to some of the exposed groundplane on the GN-BX's circuit board, just to mechanically hold it down.
+You may want to solder the ESP's RF shield to some of the exposed ground-plane on the GN-BX's circuit board, just to mechanically hold it down.
 
 
 
